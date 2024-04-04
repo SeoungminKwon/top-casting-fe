@@ -17,13 +17,14 @@ const ReviewModifyModal = ({ reviewId, onModalClose }) => {
           setTitle(response.title);
           setContent(response.content);
         })
-        .catch((error) => console.error('Error:', error));
+        .catch((error) => console.error("Error:", error));
     }
   }, [isModalOpen, reviewId]);
 
   const handleStarClick = (star) => {
-    console.log(`star : ${star}`)
-    setCurrentStars(star)};
+    console.log(`star : ${star}`);
+    setCurrentStars(star);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,26 +34,26 @@ const ReviewModifyModal = ({ reviewId, onModalClose }) => {
     }
 
     try {
-        console.log(`reviewId : ${reviewId}`)
-        const data =  {
-            writer: userInfo.userId,
-            reviewId : reviewId,
-            rating: currentStars,
-            title : title,
-            content : content
-          };
+      console.log(`reviewId : ${reviewId}`);
+      const data = {
+        writer: userInfo.userId,
+        reviewId: reviewId,
+        rating: currentStars,
+        title: title,
+        content: content,
+      };
 
-        console.log(JSON.stringify(data, null, 2));
+      console.log(JSON.stringify(data, null, 2));
       await HttpPut(`/api/v1/review/${reviewId}`, data)
-      .then((response) => {
-        console.log(`response : ${response}`);
-      })
-      .catch((e) => console.log(e));
+        .then((response) => {
+          console.log(`response : ${response}`);
+        })
+        .catch((e) => console.log(e));
       reset();
       setIsModalOpen(false); // Close modal
       onModalClose(); // Call parent's onModalClose if any action needed
     } catch (error) {
-      console.error('Submit Error:', error);
+      console.error("Submit Error:", error);
     }
   };
 
@@ -60,14 +61,14 @@ const ReviewModifyModal = ({ reviewId, onModalClose }) => {
   const handleContentChange = (e) => setContent(e.target.value);
 
   const reset = () => {
-    setContent('');
-    setTitle('');
+    setContent("");
+    setTitle("");
     setCurrentStars(5);
   };
 
   const toggleModal = () => {
     if (!userInfo) {
-      alert('로그인 후 이용해주세요.');
+      alert("로그인 후 이용해주세요.");
       return;
     }
     setIsModalOpen(!isModalOpen);
@@ -88,11 +89,13 @@ const ReviewModifyModal = ({ reviewId, onModalClose }) => {
                 {[...Array(5)].map((_, i) => (
                   <label key={i}>
                     <input
-                        type="radio"
-                        name="rating"
-                        className={`mask mask-star-2 ${currentStars >= i + 1 ? "bg-orange-500" : "bg-gray-400"}`}
-                        checked={currentStars === i + 1}
-                        onChange={() => handleStarClick(i + 1)}
+                      type="radio"
+                      name="rating"
+                      className={`mask mask-star-2 ${
+                        currentStars >= i + 1 ? "bg-orange-500" : "bg-gray-400"
+                      }`}
+                      checked={currentStars === i + 1}
+                      onChange={() => handleStarClick(i + 1)}
                     />
                   </label>
                 ))}
@@ -115,7 +118,9 @@ const ReviewModifyModal = ({ reviewId, onModalClose }) => {
               </button>
             </form>
             <div className="modal-action">
-              <button className="btn" onClick={toggleModal}>Close</button>
+              <button className="btn" onClick={toggleModal}>
+                Close
+              </button>
             </div>
           </div>
         </dialog>
