@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { LoginContext } from "../contexts/LoginContextProvider";
 import AdminOrderList from "./order/AdminOrderList";
 import AddItem from "./AddItem";
+import TotalReview from "../component/TotalReview";
 
 function Admin() {
     const { roles } = useContext(LoginContext);
@@ -26,6 +27,8 @@ function Admin() {
                 return <AddItem />;
             case "OrderList":
                 return <AdminOrderList />;
+            case "Review":
+                return <TotalReview/>;
             default:
                 return <div>메뉴를 선택해주세요.</div>;
         }
@@ -140,6 +143,32 @@ function Admin() {
                                     }
                                 >
                                     제품 등록
+                                </button>
+                            </a>
+                            <a
+                                class="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-500 transition-all hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+                                href="#"
+                            >
+                                <svg
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     width="24"
+                                     height="24"
+                                     viewBox="0 0 24 24"
+                                     fill="currentColor" // 별을 채울 색상으로 변경
+                                     stroke="currentColor"
+                                     strokeWidth="2"
+                                     strokeLinecap="round"
+                                     strokeLinejoin="round"
+                                     className="h-4 w-4"
+                                   >
+                                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21 12 17.27 5.82 21 7 14.14 2 9.27 8.91 8.26 12 2" />  
+                                </svg>
+                                <button
+                                    onClick={() =>
+                                        handleMenuClick("Review")
+                                    }
+                                >
+                                    모든 리뷰
                                 </button>
                             </a>
                         </nav>

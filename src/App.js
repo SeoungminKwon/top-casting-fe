@@ -22,6 +22,11 @@ import EditProfile from "./page/EditProfile";
 import MyPage from "./page/MyPage";
 import NavBar from './component/NavBar';
 import Admin from './page/Admin';
+import Review from './component/Review';
+import TotalReview from './component/TotalReview';
+
+
+
 
 function App() {
     return (
@@ -71,6 +76,8 @@ function App() {
                         ></Route>
                         <Route path='/EditProfile' element={<EditProfile />}></Route> {/*회원정보 수정*/}
                         <Route path='/MyPage' element={<MyPage />}></Route>
+                        <Route path='/review' element={<TotalReview />}></Route>
+                        
                     </Routes>
                 </LoginContextProvider>
             </Router>
