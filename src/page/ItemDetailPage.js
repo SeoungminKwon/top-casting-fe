@@ -4,6 +4,7 @@ import { HttpGet } from "../service/HttpService";
 import { HttpPost } from "../service/HttpService";
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import Review from "../component/Review";
 
 
 const ItemDetailPage = () => {
@@ -150,9 +151,7 @@ const ItemDetailPage = () => {
                     </div>
                 </div>
             )}
-
-
-
+            <Review itemId={itemId}></Review>
         </>
 
     );
