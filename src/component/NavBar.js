@@ -184,7 +184,10 @@ const NavBar = () => {
                       {roles.isAdmin ? 
                         <li><Link to={"/admin"}>관리자 페이지</Link></li> 
                         :  
-                        <li><Link to={"/MyPage"}>유저 상세페이지</Link></li> 
+                        <>
+                        <li><Link to={"/MyPage"}>유저 상세페이지</Link></li>
+                        <li><Link to={"/Orders"}>주문 목록</Link></li> 
+                        </>
                       }
                       
                       
