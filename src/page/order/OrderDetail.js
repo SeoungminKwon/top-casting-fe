@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import ReviewWriteModal from '../../modal/ReviewWriteModal';
+import { HttpGet } from '../../service/HttpService';
+
 
 const OrderDetail = () => {
     const [orderDetail, setOrderDetail] = useState(null);
@@ -85,7 +88,8 @@ const OrderDetail = () => {
                                 <p class="text-lg md:text-xl dark:text-white font-semibold leading-6 xl:leading-5 text-gray-800">
                                     주문목록
                                 </p>
-                                {orderDetail.findOrderItemDtos.map((item) => (
+                                {orderDetail.findOrderItemDtos.map((item, index) => (
+                                    <>
                                     <div class="mt-4 md:mt-6 flex flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full">
                                         <div class="pb-4 md:pb-8 w-full md:w-40">
                                             <img
@@ -124,6 +128,16 @@ const OrderDetail = () => {
                                             </div>
                                         </div>
                                     </div>
+                                    {orderDetail.orderStatus === "ORDER_EXCHANGE_REQUESTED" || orderDetail.orderStatus === "ORDER_REFUND_REQUESTED"
+                                    ?
+                                    null
+                                    :                                
+                                    <ReviewWriteModal orderId={orderDetail.orderId} itemName={item.itemName}
+                                    modalId={`reviewModal_${index}`}
+                                    ></ReviewWriteModal>
+                                    }
+                                    </>
+                                    
                                 ))}
                             </div>
                             <div class="flex justify-center flex-col md:flex-row flex-col items-stretch w-full space-y-4 md:space-y-0 md:space-x-6 xl:space-x-8">
