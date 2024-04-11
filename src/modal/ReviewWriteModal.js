@@ -1,41 +1,64 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { LoginContext } from "../contexts/LoginContextProvider";
-import { HttpPost } from "../service/HttpService";
+import { HttpGet, HttpPost } from "../service/HttpService";
 import { Button } from "react-daisyui";
+import { useNavigate } from "react-router-dom";
 
 const ReviewWriteModal = (props) => {
   const [currentStars, setCurrentStars] = useState(5);
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const { userInfo } = useContext(LoginContext);
+  const navigate = useNavigate();
 
-  const itemId = props.itemId;
+  const [itemName, setItemName] = useState();
+  const [orderId, setOrderId] = useState();
+  useEffect(() => {
+    setItemName(props.itemName);
+    setOrderId(props.orderId);
+    console.log(`props : ${JSON.stringify(props, null, 2)}`)
+}, [props.itemName, props.orderId]);
+
+
+
 
   const handleStarClick = (star) => {
-    console.log(`star : ${star}`);
     setCurrentStars(star);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+  
     const newReview = {
       writer: userInfo.userId,
-      itemId: itemId,
+      itemName: itemName,
       rating: currentStars,
       title: title,
       content: content,
     };
-    if (title === "" || content === "") {
-      alert("제목과 내용을 채워주세요");
-      return;
-    }
-    HttpPost(`/api/v1/items/${itemId}/review`, newReview)
+
+    console.log(`handleSubmit : ${JSON.stringify(newReview, null, 2)}`);
+  
+    await HttpPost(`/api/v1/orders/${orderId}/items/${itemName}/review`, newReview)
       .then((response) => {})
       .catch((error) => {
         console.log(`error : ${error}`);
       });
     reset();
-    document.getElementById("my_modal_1").close();
+    document.getElementById(`${props.modalId}`).close();
+  };
+
+  const verifyReview = async () => {
+    console.log(`verifyReview : ${itemName}`);
+    try {
+      await HttpGet(`/api/v1/orders/${orderId}/items/${itemName}/review`);
+      console.log(`true : ${itemName}`);
+      return true; // 요청이 성공적으로 완료되면 true 반환
+    } catch (e) {
+      console.log(e);
+      console.log(`false : ${itemName}`);
+      return false; // 에러 발생 시 false 반환
+    }
   };
 
   const handleTitleChange = (event) => {
@@ -50,25 +73,35 @@ const ReviewWriteModal = (props) => {
     setContent("");
     setTitle("");
     setCurrentStars(5);
-    props.onModalClose();
   };
+
+  
 
   return (
     <div className="font-sans p-4">
-      <Button
-        className="text-base leading-none w-full bg-gray-800 border-gray-800 border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-white dark:hover:bg-gray-700"
-        onClick={() => {
-          if (userInfo == null) {
-            alert("로그인 후 이용해주세요.");
+      <button
+        className="text-sm leading-none text-gray-600 py-3 px-5 bg-gray-100 rounded hover:bg-gray-200 focus:outline-none"
+        onClick={async() => {
+          if (Object.keys(userInfo).length === 0) {
+            navigate("/login");
             return;
           }
-          document.getElementById("my_modal_1").showModal();
+        
+          const reviewVerified = await verifyReview();
+          if (reviewVerified) {
+            console.log(`itemName : ${itemName}`)
+            console.log(`props.modalId : ${props.modalId}`)
+            document.getElementById(`${props.modalId}`).showModal();
+          } else {
+            alert("이미 리뷰를 작성했습니다.");
+          }
         }}
         variant="contained"
       >
         리뷰 작성하기
-      </Button>
-      <dialog id="my_modal_1" className="modal">
+      </button>
+      {console.log(``)}
+      <dialog id={props.modalId} className="modal">
         <div className="modal-box">
           <form onSubmit={handleSubmit} className="form-control w-full ">
             <h2 className="text-xl font-bold my-4">Review를 작성해주세요</h2>

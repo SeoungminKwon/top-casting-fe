@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import ReviewWriteModal from "../modal/ReviewWriteModal";
 import { HttpDelete, HttpGet } from "../service/HttpService";
 import ReviewModifyModal from "../modal/ReviewModifyModal";
 import { LoginContext } from "../contexts/LoginContextProvider";
@@ -48,7 +47,6 @@ const Review = (props) => {
             <p className="lg:text-4xl text-3xl font-black leading-9 text-gray-800 dark:text-white mb-3 mt-3">
               Reviews
             </p>
-            <ReviewWriteModal onModalClose={fetchData} itemId={itemId} />
           </div>
 
           {reviewList.map((review) => (
