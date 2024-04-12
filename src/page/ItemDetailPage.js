@@ -4,6 +4,7 @@ import { HttpGet } from "../service/HttpService";
 import { HttpPost } from "../service/HttpService";
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import Review from "../component/Review";
 
 
 const ItemDetailPage = () => {
@@ -124,6 +125,7 @@ const ItemDetailPage = () => {
                 <div class="mx-auto p-16 bg-gray-100 dark:bg-gray-800 flex flex-col w-3/4">
                     <img src={itemDetail.itemDetailedImageUrl} alt="Detailed view" class="mx-auto w-full h-full" />
                 </div>
+                <Review itemId={itemId}></Review>
             </div >
             {showModal && (
                 <div class="flex justify-center items-center h-screen">
@@ -150,9 +152,6 @@ const ItemDetailPage = () => {
                     </div>
                 </div>
             )}
-
-
-
         </>
 
     );
